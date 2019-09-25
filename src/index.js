@@ -6,14 +6,12 @@ const PORT = process.env.PORT || 3333;
 
 // connect to database
 require('./services/dbConfig');
+const routes = require('./routes');
 
 // middlewares
 app.use(bodyParse.urlencoded({extended:true}));
 app.use(bodyParse.json());
-
-app.get('/', (req, res) => {
-    res.send('Hello World');
-})
+app.use(routes);
 
 // Listen an port and runing it in server
 app.listen( PORT, () => {
