@@ -1,20 +1,26 @@
 version: "3"
 services:
-  # db:
-  #   image: postgres:10.2-alpine                                                                                                                                                                                                                                                                                                  
-  #   environment:                                                                                                                                                            
-  #     POSTGRES_USER: jobs                                                                                                                                               
-  #     POSTGRES_PASSWORD: 23231215                                                                                                                                           
-  #     POSTGRES_DB: descomplica           
-  #   ports:
-  #     - '5432:5432'
-
   web:
     container_name: backend
-    command: npm run dev
+    command: npm run start
+    # Caso não tenha o env file, basta tirar essa linha e da build
+    # no docker novamente e levanta-lo
+    env_file:
+      - .env
     build: .
     volumes:
       - ./:/app
     ports: [
       "3333:3333"
     ]
+    depends_on:
+      - db
+
+  db:
+    image: postgres:10.2-alpine                                                                                                                                                                                                                                                                                                  
+    environment:                                                                                                                                                            
+      POSTGRES_USER: $USER_DATABASE                                                                                                                                               
+      POSTGRES_PASSWORD: $PASSWORD_DATABASE                                                                                                                                           
+      POSTGRES_DB: $DATABASE_NAME           
+    ports:
+      - '5432:5432'

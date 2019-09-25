@@ -4,9 +4,10 @@ RUN mkdir /app
 
 WORKDIR /app
 
-COPY . /app
+COPY *json /app
 
 RUN npm install
 
-EXPOSE 3333
+COPY . /app
 
+EXPOSE 3333
