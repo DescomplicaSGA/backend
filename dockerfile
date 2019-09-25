@@ -9,5 +9,3 @@ COPY . /app
 RUN npm install
 
 EXPOSE 3333
-
-CMD ["yarn", "dev"]
