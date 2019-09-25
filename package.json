@@ -6,8 +6,8 @@
   "author": "Joberth Rogers <joberth.rogers18@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js"
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
   },
   "dependencies": {
     "express": "^4.17.1"

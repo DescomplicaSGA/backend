@@ -1,5 +1,14 @@
 version: "3"
 services:
+  # db:
+  #   image: postgres:10.2-alpine                                                                                                                                                                                                                                                                                                  
+  #   environment:                                                                                                                                                            
+  #     POSTGRES_USER: jobs                                                                                                                                               
+  #     POSTGRES_PASSWORD: 23231215                                                                                                                                           
+  #     POSTGRES_DB: descomplica           
+  #   ports:
+  #     - '5432:5432'
+
   web:
     container_name: backend
     command: npm run dev
