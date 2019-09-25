@@ -2,7 +2,7 @@ version: "3"
 services:
   web:
     container_name: backend
-    command: npm run start
+    command: npm run dev
     # Caso não tenha o env file, basta tirar essa linha e da build
     # no docker novamente e levanta-lo
     env_file:
