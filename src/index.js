@@ -4,6 +4,10 @@ const bodyParse = require('body-parser');
 
 const PORT = process.env.PORT || 3333;
 
+// connect to database
+require('./services/dbConfig');
+
+// middlewares
 app.use(bodyParse.urlencoded({extended:true}));
 app.use(bodyParse.json());
 
