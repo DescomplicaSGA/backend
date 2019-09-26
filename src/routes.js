@@ -4,6 +4,7 @@ const routes = express.Router();
 const StudentControllers = require('./controllers/StudentController');
 const TeacherControllers = require('./controllers/TeacherController');
 const ClassControllers = require('./controllers/ClassController');
+const SearchControllers = require('./controllers/SearchController');
 
 routes.get('/', (req, res) => {
   res.send('hello');
@@ -22,4 +23,9 @@ routes.post('/teacher/:id', TeacherControllers.addSchedule);
 //Class routes
 routes.get('/class', ClassControllers.index);
 routes.post('/class', ClassControllers.store);
+
+// Search routes
+routes.post('/search/teacher', SearchControllers.search_teacher);
+routes.post('/search/student', SearchControllers.search_student);
+
 module.exports = routes;
