@@ -37,7 +37,7 @@ module.exports = {
     const teacher_schedule = await Class.find({$and: [{ 'meet.day_week' : meet.day_week}, {teacher: teacher}]});
     
     // return the number in day week
-    var current_dayweek = moment().weekday();
+    var current_dayweek = moment(meet.day_week).weekday();
 
     for ( let time_avaiable of info_teacher.avaiability){
       if ( time_avaiable.day_week === days_of_week[current_dayweek]) {
