@@ -27,21 +27,21 @@ module.exports = {
 
   async store ( req, res ) {
 
-    const { meet, teacher } = req.body;
+    const { date, init_hour, final_hour , teacher } = req.body;
 
     const info_teacher = await Teacher.findById(teacher);
     
     // init schedule of meet
-    var init_meet_schedule = moment(`${meet.init_hour}:00`,format_time);
+    var init_meet_schedule = moment(`${init_hour}:00`,format_time);
 
     // all the schedule for that day 
-    const teacher_schedule = await Class.find({$and: [{ date : meet.day_week}, {teacher: teacher}]});
+    const teacher_schedule = await Class.find({$and: [{ date : date}, {teacher: teacher}]});
     
     // return the number in day week
-    var current_dayweek = moment(meet.day_week).weekday();
+    var current_dayweek = moment(date).weekday();
 
     // return the number of Univaibility with current teacher
-    const teacher_unavaibility = Unavaiability.find({$and: [{ date: meet.day_week}, {name: teacher}]});
+    const teacher_unavaibility = Unavaiability.find({$and: [{ date: date}, {name: teacher}]});
 
     for ( let time_avaiable of info_teacher.avaiability){
       
@@ -56,11 +56,11 @@ module.exports = {
 
           }else{
 
-            if (teacher_unavaibility.length > 1 ){
+            if (teacher_unavaibility.length > 0 ){
             
               for (let unavaible of teacher_unavaibility){
 
-                if(init_meet_schedule.isBetween(moment(`${unavaible.day.init_hour}:00`, format_time)), moment(`${unavaible.final_hour}:00`, format_time) ){
+                if(init_meet_schedule.isBetween(moment(`${unavaible.init_hour}:00`, format_time)), moment(`${unavaible.final_hour}:00`, format_time) ){
 
                   return res.json({'msg': `Não foi possível cadastrar a aula`});  
 
