@@ -1,9 +1,9 @@
 const {Schema, model} = require('mongoose');
 
-const ClassSchema = new Schema({
+const UnavailabilitySchema = ({
 
- 
-  date: {
+  
+  date : {
     type: String,
     required: true
   },
@@ -18,16 +18,12 @@ const ClassSchema = new Schema({
     required: true 
   },
 
-  teacher: {
+  name: {
     type: Schema.Types.ObjectId,
-    ref: 'teacher'
+    ref: 'teacher',
+    required: true
   },
-
-  student: [{
-    type: Schema.Types.ObjectId,
-    ref: 'student'
-  }]
 
 });
 
-module.exports = model('class', ClassSchema);
+module.exports = model('unavailability', UnavailabilitySchema);

@@ -1,5 +1,6 @@
 const Class = require('../models/Class');
 const Teacher = require('../models/Teacher');
+const Unavaiability = require('../models/Unavailability');
 
 const moment = require('moment');
 
@@ -34,13 +35,18 @@ module.exports = {
     var init_meet_schedule = moment(`${meet.init_hour}:00`,format_time);
 
     // all the schedule for that day 
-    const teacher_schedule = await Class.find({$and: [{ 'meet.day_week' : meet.day_week}, {teacher: teacher}]});
+    const teacher_schedule = await Class.find({$and: [{ date : meet.day_week}, {teacher: teacher}]});
     
     // return the number in day week
     var current_dayweek = moment(meet.day_week).weekday();
 
+    // return the number of Univaibility with current teacher
+    const teacher_unavaibility = Unavaiability.find({$and: [{ date: meet.day_week}, {name: teacher}]});
+
     for ( let time_avaiable of info_teacher.avaiability){
+      
       if ( time_avaiable.day_week === days_of_week[current_dayweek]) {
+        
         if( init_meet_schedule.isBetween(moment(`${time_avaiable.init_hour}:00`, format_time)), moment(`${time_avaiable.final_hour}:00`, format_time) ){
           
           if(teacher_schedule.length > 0){
@@ -50,8 +56,27 @@ module.exports = {
 
           }else{
 
-            await Class.create(req.body);
-            return res.json({'msg': `Cadastro de aula foi feito com sucesso`});
+            if (teacher_unavaibility.length > 1 ){
+            
+              for (let unavaible of teacher_unavaibility){
+
+                if(init_meet_schedule.isBetween(moment(`${unavaible.day.init_hour}:00`, format_time)), moment(`${unavaible.final_hour}:00`, format_time) ){
+
+                  return res.json({'msg': `Não foi possível cadastrar a aula`});  
+
+                }
+
+                await Class.create(req.body);
+                return res.json({'msg': `Cadastro de aula foi feito com sucesso`});  
+
+              }
+
+            }else{
+              
+              await Class.create(req.body);
+              return res.json({'msg': `Cadastro de aula foi feito com sucesso`});
+            
+            }
 
           }
           
@@ -60,7 +85,6 @@ module.exports = {
     }
 
     return res.json({'msg': `Não foi possível cadastrar a aula`});  
-
 
   }
 

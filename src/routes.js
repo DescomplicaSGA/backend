@@ -5,6 +5,7 @@ const StudentControllers = require('./controllers/StudentController');
 const TeacherControllers = require('./controllers/TeacherController');
 const ClassControllers = require('./controllers/ClassController');
 const SearchControllers = require('./controllers/SearchController');
+const UnavaibilityControllers = require('./controllers/UnavailabilityController');
 
 routes.get('/', (req, res) => {
   res.send('hello');
@@ -27,5 +28,9 @@ routes.post('/class', ClassControllers.store);
 // Search routes
 routes.post('/search/teacher', SearchControllers.search_teacher);
 routes.post('/search/student', SearchControllers.search_student);
+
+// Unavaibilities routes
+routes.get('/unavaibility', UnavaibilityControllers.index);
+routes.post('/unavaibility', UnavaibilityControllers.store);
 
 module.exports = routes;
