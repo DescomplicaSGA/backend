@@ -14,11 +14,19 @@ module.exports = {
     try{
 
       let teacher = await Teacher.create(req.body);
-      res.json(teacher);
+      res.json({
+        type: "success", 
+        msg: "Professor cadastrado com sucesso!",
+        payload: teacher
+      });
     
     } catch(error) {
       
-      res.json(error);
+      res.json({
+        type: "error", 
+        msg: "Não foi possível cadastrar o professor!",
+        payload: error
+      });
 
     }
 
@@ -39,10 +47,18 @@ module.exports = {
                       {$push: {avaiability: req.body}
                     });
 
-      res.json(teacher);
+      res.json({
+        type: "success", 
+        msg: "Horario cadastrado com sucesso!",
+        payload: teacher
+      });
 
     } catch (error) {
-      res.json(error);
+      res.json({
+        type: "error", 
+        msg: "Não foi possível cadastrar o horario!",
+        payload: error
+      });
     }
 
   }

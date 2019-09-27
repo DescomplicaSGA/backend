@@ -14,11 +14,19 @@ module.exports = {
     try {
 
       await Unavailability.create(req.body);
-      res.json({"msg": `Cadastro realizado com sucesso`});
+      res.json({
+        type: "success", 
+        msg: "Indisponibilidade cadastrado com sucesso!",
+        payload: teacher
+      });
 
     } catch (error){
 
-      res.json({"msg": `Não foi possível cadastrar indisponibilidade`});
+      res.json({
+        type: "error", 
+        msg: "Não foi possível cadastrar o indisponibilidade!",
+        payload: error
+      });
 
     }
 

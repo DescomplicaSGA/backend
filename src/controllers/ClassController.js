@@ -20,7 +20,7 @@ module.exports = {
 
   async index (req, res) {
 
-    const classes = await Class.find();
+    const classes = await Class.find().populate('student').populate('teacher');
     res.json(classes);
 
   },
@@ -52,7 +52,11 @@ module.exports = {
           if(teacher_schedule.length > 0){
 
             await Class.create(req.body);
-            return res.json({'msg': `Existem alunos agendados para essa aula, mas o cadastrado foi feito!`});
+            return res.json({
+              type: "warning", 
+              msg: `Existem alunos agendados para essa aula, mas o cadastrado foi feito!`,
+              payload: error
+            });
 
           }else{
 
@@ -62,19 +66,31 @@ module.exports = {
 
                 if(init_meet_schedule.isBetween(moment(`${unavaible.init_hour}:00`, format_time)), moment(`${unavaible.final_hour}:00`, format_time) ){
 
-                  return res.json({'msg': `Professor ausente no momento!`});  
+                  return res.json({
+                    type: "error", 
+                    msg: `Professor ausente no momento!`,
+                    payload: error
+                  });  
 
                 }
 
                 await Class.create(req.body);
-                return res.json({'msg': `Cadastro de aula foi feito com sucesso`});  
+                return res.json({
+                  type: "success", 
+                  msg: "Aula cadastrada com sucesso!",
+                  payload: req.body
+                });  
 
               }
 
             }else{
               
               await Class.create(req.body);
-              return res.json({'msg': `Cadastro de aula foi feito com sucesso`});
+              return res.json({
+                type: "success", 
+                msg: "Aula cadastrada com sucesso!",
+                payload: req.body
+              });
             
             }
 
@@ -84,7 +100,11 @@ module.exports = {
       }
     }
 
-    return res.json({'msg': `Não foi possível cadastrar a aula`});  
+    return res.json({
+      type: "error", 
+      msg: "Não foi possível cadastrar a aula!",
+      payload: error
+    });  
 
   }
 

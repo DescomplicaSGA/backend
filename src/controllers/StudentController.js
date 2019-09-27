@@ -13,11 +13,19 @@ module.exports = {
     try{
 
       const student = await Student.create(req.body);
-      res.json(student);
+      res.json({
+        type: "success", 
+        msg: "Aluno cadastrado com sucesso!",
+        payload: student
+      });
 
     } catch (error) {
 
-      res.json(error);
+      res.json({
+        type: "error", 
+        msg: "Não foi possível cadastrar o aluno!",
+        payload: error
+      });
     
     }
 
