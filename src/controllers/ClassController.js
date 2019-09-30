@@ -41,12 +41,12 @@ module.exports = {
     var current_dayweek = moment(date).weekday();
 
     // return the number of Univaibility with current teacher
-    const teacher_unavaibility = await Unavaiability.find();
+    const teacher_unavaibility = await Unavaiability.find({ name: teacher });
 
     for ( let time_avaiable of info_teacher.avaiability){
       
       if ( time_avaiable.day_week === days_of_week[current_dayweek]) {
-        
+
         if( init_meet_schedule.isBetween(moment(`${time_avaiable.init_hour}:00`, format_time)), moment(`${time_avaiable.final_hour}:00`, format_time) ){
 
           if(teacher_schedule.length > 0){
@@ -55,12 +55,15 @@ module.exports = {
             return res.json({
               type: "warning", 
               msg: `Existem alunos agendados para essa aula, mas o cadastrado foi feito!`,
-              payload: error
+              payload: req.body
             });
 
           }else{
 
             if (teacher_unavaibility.length > 0 ){
+              
+
+              console.log(teacher_unavaibility);
 
               for (let unavaible of teacher_unavaibility){
 
@@ -69,19 +72,19 @@ module.exports = {
                   return res.json({
                     type: "error", 
                     msg: `Professor ausente no momento!`,
-                    payload: error
+                    payload: req.body
                   });  
 
-                }
+                } 
 
-                await Class.create(req.body);
+              }
+
+              await Class.create(req.body);
                 return res.json({
                   type: "success", 
                   msg: "Aula cadastrada com sucesso!",
                   payload: req.body
-                });  
-
-              }
+              }); 
 
             }else{
               
@@ -103,7 +106,7 @@ module.exports = {
     return res.json({
       type: "error", 
       msg: "Não foi possível cadastrar a aula!",
-      payload: error
+      payload: req.body
     });  
 
   }
